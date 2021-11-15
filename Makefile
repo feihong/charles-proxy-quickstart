@@ -7,5 +7,8 @@ db:
 cbz:
 	python generate_cbz_files.py
 
+volume:
+	python volume.py
+
 clean:
 	rm session.har; rm session.db

@@ -2,7 +2,6 @@ import sqlite3
 import json
 import os
 from pathlib import Path
-from haralyzer import HarParser
 import base64
 
 filename = 'session.db'

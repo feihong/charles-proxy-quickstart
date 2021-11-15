@@ -25,7 +25,15 @@ Import certificate in Mobile Safari
 
 1. Visit https://chls.pro/ssl
 
+## Charles Proxy UI actions
+
+View IP address of proxy: Help > Local IP Address
+
 ## Commands
+
+Start Charles Proxy
+
+    ~/opt/charles/bin/charles
 
 Convert session HAR file to database file
 
