@@ -7,7 +7,7 @@
     (if (or (= 0 (content :size)) (nil? (content :text)))
       nil
       {:url (get-in entry [:request :url])
-       :data (buffer/push-string @""
+       :data (buffer
                (if (= "base64" (content :encoding))
                  (codec/decode (content :text))
                  (content :text)))})))

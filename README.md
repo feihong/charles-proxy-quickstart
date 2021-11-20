@@ -7,6 +7,10 @@ Download tarball from https://www.charlesproxy.com/download/
     tar xvfz charles-proxy-4.6.2_amd64.tar.gz
     mv charles ~
 
+[Install Janet](https://github.com/feihong/janet-quickstart#installation)
+
+    jpm install sqlite3 json https://github.com/joy-framework/codec
+
 ## Configuration
 
 Export root certificate to .pem file
