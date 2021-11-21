@@ -9,10 +9,10 @@
   (do
     (defn keep-fn [entry]
       (if-let [content (get-in entry [:response :content])
-              size-not-zero (not= 0 (content :size))
-              text (content :text)
-              encoding (content :encoding)
-              maybe-decode |(if (= "base64" encoding) (codec/decode $0) $0)]
+               size-not-zero (not= 0 (content :size))
+               text (content :text)
+               encoding (content :encoding)
+               maybe-decode |(if (= "base64" encoding) (codec/decode $0) $0)]
         {:url (get-in entry [:request :url])
         :data (-> text maybe-decode buffer)}))
     (with [f (file/open "session.har")]
