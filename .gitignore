@@ -1,3 +1,7 @@
+# Exported by Charles Proxy
 *.har
+*.trace
+
+# Generated files
 *.cbz
 *.db
