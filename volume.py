@@ -49,9 +49,14 @@ images = get_images()
 
 # Write all images to big cbz file
 output_file = input_dir / f'{comic_title} 第xxx卷.cbz'
+image_count = 0
 
 with ZipFile(output_file, 'w') as zf:
   for i, data in enumerate(images, 1):
     zf.writestr(f'{i:03}.jpg', data, compress_type=ZIP_STORED)
 
-  print(f'\nWrote {i} images to {output_file}')
+  image_count = i
+
+final_path = output_file.with_name(f'{output_file.stem} ({image_count}){output_file.suffix}')
+output_file.rename(final_path)
+print(f'Wrote {image_count} images to {final_path}')
