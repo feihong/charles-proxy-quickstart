@@ -23,11 +23,15 @@ def get_episodes():
   episodes = {}
   cur.execute("select data from dump where url like '%GetImageIndex%';")
 
-  for row in cur.fetchall():
-    episode = json.loads(row[0])['data']
+  for (data,) in cur.fetchall():
+    data = json.loads(data)
+    if data is None:
+      continue
+    episode = data['data']
     path = episode['path']
-    if not path: continue
-    match = re.match(r"/bfs/manga/(\d+)/(\d+)", episode['path'])
+    if not path:
+      continue
+    match = re.match(r"/bfs/manga/(\d+)/(\d+)", path)
     comic_id = match.group(1)
     episode['comic'] = comics[comic_id]
     episode_id = int(match.group(2))

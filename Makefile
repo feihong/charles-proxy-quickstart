@@ -4,8 +4,8 @@ proxy:
 process: db cbz
 
 db:
-	python to_sqlite.py
-	#janet to_sqlite.janet
+	#python to_sqlite.py
+	janet to_sqlite.janet
 
 cbz:
 	python generate_cbz_files.py

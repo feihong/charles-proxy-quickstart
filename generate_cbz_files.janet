@@ -7,8 +7,8 @@
   (let [row->comic |(-> $0 (get :data) (json/decode true) (get :data))
         comic->pair |[($0 :id) $0]]
     (as-> (sql/eval db "select data from dump where url like '%ComicDetail%';") _
-      (mapcat |(-> $0 row->comic comic->pair) _)
-      (table ;_))))
+      (map |(-> $0 row->comic comic->pair) _)
+      (from-pairs _))))
 
 #(each comic comics (pp (type comic)))
 
@@ -24,8 +24,8 @@
             episode))
         episode->pair |[($0 :id) $0]]
     (as-> (sql/eval db "select data from dump where url like '%GetImageIndex%';") _
-      (mapcat |(-> $0 row->episode episode->pair) _)
-      (table ;_)
+      (map |(-> $0 row->episode episode->pair) _)
+      (from-pairs _)
       (values _))))
 
 #(pp (get-in episodes [0]))
