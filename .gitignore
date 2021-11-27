@@ -4,5 +4,6 @@
 *.chlsx
 
 # Generated files
+*.jsonl
 *.cbz
 *.db
