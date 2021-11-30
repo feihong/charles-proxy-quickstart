@@ -16,10 +16,10 @@ Download tarball from https://www.charlesproxy.com/download/
 Export root certificate to .pem file
 
 1. Help > SSL Proxying > Save Charles Root Certificate...
-1. Remember to write in the name of the file
+1. Choose to export as "Base 64 encoded certificate (.pem)"
 1. Click OK
 
-Import certificate in Brave (doesn't seem to work)
+Import certificate in Chrome (doesn't seem to work in Brave)
 
 1. Settings > Privacy and security > Security > Manage certificates > Authorities
 1. Click Import and choose the .pem file you exported
@@ -28,6 +28,8 @@ Import certificate in Brave (doesn't seem to work)
 Import certificate in Mobile Safari
 
 1. Visit https://chls.pro/ssl
+
+For Chrome, you must change your system HTTP/HTTPS Proxy settings to point to 127.0.0.1:8888
 
 ## Charles Proxy UI actions
 
