@@ -10,7 +10,7 @@ db:
 	coconut-run db.coco
 
 cbz:
-	python generate_cbz_files.py
+	coconut-run cbz.coco
 
 volume:
 	python volume.py

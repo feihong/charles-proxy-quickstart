@@ -1,7 +1,7 @@
 import json
 import re
 import sqlite3
-from zipfile import ZipFile, ZIP_STORED
+import zipfile
 
 db_file = 'session.db'
 
@@ -14,20 +14,43 @@ def get_episodes(conn, comics):
     episode = data |> json.loads |> .['data']
     match = re.match(r"/bfs/manga/(?P<comic_id>\d+)/(?P<episode_id>\d+)", episode['path'])
     episode['id'] = match.group('episode_id') |> int
-    comic = match.group('comic_id') |> int |> (id -> comics[id])
+    comic_id = match.group('comic_id') |> int
+    comic = comics[comic_id]
     detail = comic['ep_list'] |> filter$(-> _['id'] == episode['id']) |> .$[0]
     title_parts = (comic['title'], detail['short_title'], detail['title'])
     episode['title'] = ' '.join(s.strip() for s in title_parts if s.strip())
+    episode['link'] = f'https://manga.bilibili.com/mc{comic_id}/{episode["id"]}'
     yield episode
 
 def get_episode_image_data(conn, episode):
-  pass
+  for num, image in enumerate(episode['images'], 1):
+    image_path = image['path']
+    rows = conn.execute(f"select data from dump where url like '%{image_path}%' LIMIT 1") |> .fetchall()
+    if len(rows) == 0:
+      print(f'No data found for image {num} of {episode["title"]}')
+    else:
+      yield rows[0][0]
+
+def make_cbz(conn, episode):
+  image_data = get_episode_image_data(conn, episode) |> list
+  image_count = len(image_data)
+  if image_count != len(episode['images']):
+    print(f'Found {image_count} images for {episode["title"]}, expected {len(episode["images"])}')
+
+  output_file = f'{episode["title"]} ({image_count}).cbz'
+  with zipfile.ZipFile(output_file, 'w') as zf:
+    for num, image_data in enumerate(image_data, 1):
+      image_file = f'{num:03}.jpg'
+      zf.writestr(image_file, image_data, compress_type=zipfile.ZIP_STORED)
+
+    meta = {'title': episode['title'], 'link': episode['link']}
+    zf.writestr('meta.json', json.dumps(meta, ensure_ascii=False))
+
+  print(f'Wrote {image_count} images to {output_file}')
 
 with sqlite3.connect(db_file) as conn:
   make_pairs = map$(x -> (x['id'], x))
   comics = get_comics(conn) |> make_pairs |> dict
-  # for (_, comic) in comics.items():
-  #   print(comic['title'])
   episodes = get_episodes(conn, comics) |> make_pairs |> dict |> .values()
   for episode in episodes:
-    print(episode['title'])
+    make_cbz(conn, episode)
