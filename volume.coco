@@ -30,19 +30,30 @@ def get_meta_and_images(cbz_file):
       if name.endswith('.jpg'):
         yield ('image', zf.read(name))
 
-def get_data() = get_cbz_files() |> map$(get_meta_and_images) |> flatten
+def get_files():
+  image_count = 0
+  chapter_metas = []
+
+  for type_, data_ in get_cbz_files() |> map$(get_meta_and_images) |> flatten:
+    case type_:
+      match 'meta':
+        chapter_metas.append((image_count+1, data_))
+      match 'image':
+        image_count += 1
+        yield (f'{image_count:03}.jpg', data_)
+
+  yield ('meta.json', json.dumps(chapter_metas, ensure_ascii=False))
+  yield image_count
 
 with tempfile.TemporaryFile() as tf:
   image_count = 0
-
   with zipfile.ZipFile(tf, 'w') as zf:
-    for (type_, data_) in get_data():
-      case type_:
-        match 'meta':
-          print(data_)
-        match 'image':
-          image_count += 1
-          zf.writestr(f'{image_count:03}.jpg', data_, compress_type=zipfile.ZIP_STORED)
+    for item in get_files():
+      case item:
+        match img_count if isinstance(img_count, int):
+          image_count = img_count
+        match (filename, data_):
+          zf.writestr(filename, data_, compress_type=zipfile.ZIP_STORED)
 
   tf.seek(0)
   output_file = input_dir / f'{comic_title} 第xxx卷 ({image_count}).cbz'

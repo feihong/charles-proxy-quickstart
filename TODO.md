@@ -4,3 +4,4 @@
 - [x] Migrate generate_cbz_files.py to Coconut
 - [x] Add episode title and links to cbz files
 - [x] Migrate volume.py to Coconut
+- [x] Add chapter metadata to volume cbz file
