@@ -1,0 +1,33 @@
+import json
+import re
+import sqlite3
+from zipfile import ZipFile, ZIP_STORED
+
+db_file = 'session.db'
+
+def get_comics(conn):
+  for (data,) in conn.execute("select data from dump where url like '%ComicDetail%'"):
+    yield data |> json.loads |> .['data']
+
+def get_episodes(conn, comics):
+  for (data,) in conn.execute("select data from dump where url like '%GetImageIndex%'"):
+    episode = data |> json.loads |> .['data']
+    match = re.match(r"/bfs/manga/(?P<comic_id>\d+)/(?P<episode_id>\d+)", episode['path'])
+    episode['id'] = match.group('episode_id') |> int
+    comic = match.group('comic_id') |> int |> (id -> comics[id])
+    detail = comic['ep_list'] |> filter$(-> _['id'] == episode['id']) |> .$[0]
+    title_parts = (comic['title'], detail['short_title'], detail['title'])
+    episode['title'] = ' '.join(s.strip() for s in title_parts if s.strip())
+    yield episode
+
+def get_episode_image_data(conn, episode):
+  pass
+
+with sqlite3.connect(db_file) as conn:
+  make_pairs = map$(x -> (x['id'], x))
+  comics = get_comics(conn) |> make_pairs |> dict
+  # for (_, comic) in comics.items():
+  #   print(comic['title'])
+  episodes = get_episodes(conn, comics) |> make_pairs |> dict |> .values()
+  for episode in episodes:
+    print(episode['title'])
