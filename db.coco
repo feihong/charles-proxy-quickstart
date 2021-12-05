@@ -1,0 +1,27 @@
+import sqlite3
+import json
+import os
+from pathlib import Path
+import base64
+
+jsonl_file = 'session.jsonl'
+db_file = Path('session.db')
+if db_file.exists():
+  os.remove(db_file)
+
+def get_lines():
+  with open(jsonl_file) as f:
+    for line in f:
+      yield line
+
+def lines_to_rows(lines):
+  for line in lines:
+    item = json.loads(line)
+    data_ = item['data']
+    if data_ is not None:
+      yield {'url': item['url'], 'data': if item['encoding'] == 'base64' then base64.b64decode(data_) else data_}
+
+with sqlite3.connect(db_file) as conn:
+  conn.execute("CREATE TABLE dump (url text, data blob)")
+  for row in get_lines() |> lines_to_rows:
+    conn.execute('INSERT INTO dump VALUES (:url, :data)', row)

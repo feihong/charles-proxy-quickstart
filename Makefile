@@ -7,8 +7,7 @@ jsonl:
 	jq --compact-output '.log.entries[] | {url: .request.url, encoding: .response.content.encoding, data: .response.content.text}' session.har > session.jsonl
 
 db:
-	#python to_sqlite.py
-	janet db.janet
+	coconut-run db.coco
 
 cbz:
 	python generate_cbz_files.py

@@ -5,11 +5,9 @@
 Download tarball from https://www.charlesproxy.com/download/
 
     tar xvfz charles-proxy-4.6.2_amd64.tar.gz
-    mv charles ~
+    mv charles ~/opt
 
-[Install Janet](https://github.com/feihong/janet-quickstart#installation)
-
-    jpm install sqlite3 json https://github.com/joy-framework/codec
+    pip install --user coconut
 
 ## Configuration
 
@@ -37,7 +35,7 @@ View IP address of proxy: Help > Local IP Address
 
 Start Charles Proxy
 
-    ~/opt/charles/bin/charles
+    make proxy
 
 Convert session HAR file to database file
 
@@ -46,3 +44,7 @@ Convert session HAR file to database file
 Consolidate images into CBZ files
 
     make cbz
+
+Combine chapter CBZ files into a volume CBZ file:
+
+    make volume
