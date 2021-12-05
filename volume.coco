@@ -1,0 +1,50 @@
+# The logic here assumes that a series title has no spaces in it
+from pathlib import Path
+import json
+import os
+import re
+import zipfile
+import tempfile
+
+input_dir = Path(os.getcwd())
+comic_title = 'Unknown'
+
+def get_cbz_files():
+  # get cbz files sorted by modification time
+  for file in input_dir.glob('*.cbz') |> sorted$(key=p -> p.stat().st_mtime_ns):
+    title = file.stem.split(' ')[0]
+
+    # skip volume cbz files
+    if re.search(r'第\w+卷', file.stem):
+      continue
+    else:
+      global comic_title
+      comic_title = title
+      yield file
+
+def get_meta_and_images(cbz_file):
+  with zipfile.ZipFile(cbz_file, 'r') as zf:
+    yield ('meta', zf.read('meta.json') |> json.loads)
+
+    for name in sorted(zf.namelist()):
+      if name.endswith('.jpg'):
+        yield ('image', zf.read(name))
+
+def get_data() = get_cbz_files() |> map$(get_meta_and_images) |> flatten
+
+with tempfile.TemporaryFile() as tf:
+  image_count = 0
+
+  with zipfile.ZipFile(tf, 'w') as zf:
+    for (type_, data_) in get_data():
+      case type_:
+        match 'meta':
+          print(data_)
+        match 'image':
+          image_count += 1
+          zf.writestr(f'{image_count:03}.jpg', data_, compress_type=zipfile.ZIP_STORED)
+
+  tf.seek(0)
+  output_file = input_dir / f'{comic_title} 第xxx卷 ({image_count}).cbz'
+  output_file.write_bytes(tf.read())
+  print(f'Wrote {image_count} images to {output_file}')

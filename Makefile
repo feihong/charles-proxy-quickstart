@@ -13,7 +13,7 @@ cbz:
 	coconut-run cbz.coco
 
 volume:
-	python volume.py
+	coconut-run volume.coco
 
 clean:
 	rm session.har; rm session.db; rm *.cbz
