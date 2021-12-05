@@ -25,11 +25,11 @@ def get_episodes(conn, comics):
 def get_episode_image_data(conn, episode):
   for num, image in enumerate(episode['images'], 1):
     image_path = image['path']
-    rows = conn.execute(f"select data from dump where url like '%{image_path}%' LIMIT 1") |> .fetchall()
-    if len(rows) == 0:
+    row = conn.execute(f"select data from dump where url like '%{image_path}%' LIMIT 1") |> .fetchone()
+    if row is None:
       print(f'No data found for image {num} of {episode["title"]}')
     else:
-      yield rows[0][0]
+      yield row[0]
 
 def make_cbz(conn, episode):
   image_data = get_episode_image_data(conn, episode) |> list
