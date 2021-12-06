@@ -1,5 +1,5 @@
 proxy:
-	~/opt/charles/bin/charles
+	~/opt/charles/bin/charles &
 
 process: jsonl db cbz
 
