@@ -1,11 +1,17 @@
 # Feihong's Charles Proxy Quickstart
 
-## Installation
+## Prerequisites
+
+Install jq
+
+    sudo apt-get install jq
 
 Download tarball from https://www.charlesproxy.com/download/
 
     tar xvfz charles-proxy-4.6.2_amd64.tar.gz
     mv charles ~/opt
+
+## Installation
 
     pip install --user coconut
 
@@ -50,3 +56,9 @@ Consolidate images into CBZ files
 Combine chapter CBZ files into a volume CBZ file:
 
     make volume
+
+## Steps
+
+1. Go to Settings > General > About > Certificate Trust Settings
+1. Turn on Charles Proxy CA
+1. ...

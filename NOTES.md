@@ -10,5 +10,3 @@ Remember to right-click on a domain and select Enable SSL Proxy. Not sure if the
 this setting.
 
 It's not clear how to parse the binary payloads in the .trace files exported by Charles Proxy. Running `gzip.decompress` on them didn't work, even after stripping newlines.
-
-HAR files are often enormous, and the Janet script will sometimes segfault on them. However, the Python script has never failed due to file size.

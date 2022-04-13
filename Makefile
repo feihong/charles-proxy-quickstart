@@ -16,4 +16,4 @@ volume:
 	coconut-run volume.coco
 
 clean:
-	rm session.har; rm session.db; rm *.cbz
+	rm session.har; rm session.jsonl; rm session.db; rm *.cbz

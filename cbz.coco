@@ -1,3 +1,6 @@
+"""
+Convert SQLite database file to a bunch of .cbz files
+"""
 import json
 import re
 import sqlite3
