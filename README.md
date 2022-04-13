@@ -57,8 +57,21 @@ Combine chapter CBZ files into a volume CBZ file:
 
     make volume
 
-## Steps
+## Instructions
 
 1. Go to Settings > General > About > Certificate Trust Settings
 1. Turn on Charles Proxy CA
-1. ...
+1. Run `make proxy` to start Charles Proxy
+1. Select Help > Local IP Address to get the IP address to connect to
+1. Go to Settings > Wi-Fi > (name of your wifi network) > (i) > Configure Proxy
+1. Select Manual
+1. For Server, enter the IP address of Charles Proxy
+1. For Port, enter 8888
+1. Tap Save
+1. Do the browsing you need to do
+   1. Select Settings > Clear cached files
+   1. ...
+1. Select File > Export Session...
+1. Save as session.har
+1. Run `make process` to generate the .cbz files
+
