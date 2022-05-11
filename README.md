@@ -70,7 +70,11 @@ Combine chapter CBZ files into a volume CBZ file:
 1. Tap Save
 1. Do the browsing you need to do
    1. Select Settings > Clear cached files
-   1. ...
+   1. Tap 书架
+   1. Select the series
+   1. Tap (downward arrow) button
+   1. Select the chapter you want to download, then tap 免费缓存
+   1. Repeat until all chapters are downloaded
 1. Select File > Export Session...
 1. Save as session.har
 1. Run `make process` to generate the .cbz files
