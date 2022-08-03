@@ -16,6 +16,9 @@ def get_episodes(conn, comics):
   for (data,) in conn.execute("select data from dump where url like '%GetImageIndex%'"):
     episode = data |> json.loads |> .['data']
     match = re.match(r"/bfs/manga/(?P<comic_id>\d+)/(?P<episode_id>\d+)", episode['path'])
+    # If episode['path'] doesn't match, then it probably hasn't been bought
+    if match is None:
+      continue
     episode['id'] = match.group('episode_id') |> int
     comic_id = match.group('comic_id') |> int
     comic = comics[comic_id]
