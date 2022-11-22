@@ -13,7 +13,7 @@ Download tarball from https://www.charlesproxy.com/download/
 
 ## Installation
 
-    pip install --user coconut
+    pip install coconut
 
 ## Configuration
 
@@ -29,9 +29,16 @@ Import certificate in Chrome (doesn't seem to work in Brave)
 1. Click Import and choose the .pem file you exported
 1. Will appear in list as "org-XK72 Ltd"
 
-Import certificate in Mobile Safari
+Import certificate on iOS
 
+1. Switch to Manual in HTTP Proxy setting
 1. Visit https://chls.pro/ssl
+1. Modal will appear asking if you want to allow download of configuration profile. Tap Allow.
+1. Select iPhone
+1. Go to Settings > General > VPN & Device Management > Downloaded Profile and tap the profile you just downloaded
+1. Tap Install, Install, Done
+1. Go to Settings > General > About > Certificate Trust Settings
+1. Enable the certificate for the profile you just installed
 
 For Chrome, you must change your system HTTP/HTTPS Proxy settings to point to 127.0.0.1:8888
 
@@ -78,4 +85,3 @@ Combine chapter CBZ files into a volume CBZ file:
 1. Select File > Export Session...
 1. Save as session.har
 1. Run `make process` to generate the .cbz files
-
